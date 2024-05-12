@@ -1,5 +1,5 @@
 from django.urls import path
-from account.views import ExpenditureListView, IncomeListView, SendPasswordResetEmailView, UserChangePasswordView, UserLoginView, UserProfileView, UserRegistrationView, UserPasswordResetView,account_verify,VerifyPage,UserProfileUpdateView,UserDeleteView
+from account.views import CategoryListCreateAPIView, CategoryRetrieveUpdateDestroyAPIView, SendPasswordResetEmailView, UserChangePasswordView, UserLoginView, UserProfileView, UserRegistrationView, UserPasswordResetView,account_verify,VerifyPage,UserProfileUpdateView,UserDeleteView
 urlpatterns = [
     path('register/', UserRegistrationView.as_view(), name='register'),
     path('login/', UserLoginView.as_view(), name='login'),
@@ -11,6 +11,7 @@ urlpatterns = [
     path('verifypage/', VerifyPage.as_view(), name='page'),
     path('profile/update/', UserProfileUpdateView.as_view(), name='profile-update'),
     path('account/delete/', UserDeleteView.as_view(), name='account-delete'),
-    path('income/', IncomeListView.as_view(), name='income-list'),
-    path('expenditure/', ExpenditureListView.as_view(), name='expenditure-list'),
+    path('categories/', CategoryListCreateAPIView.as_view(), name='category-list'),
+    path('categories/<int:pk>/', CategoryRetrieveUpdateDestroyAPIView.as_view(), name='category-detail'),
+
 ]

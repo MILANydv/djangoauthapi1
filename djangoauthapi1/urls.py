@@ -7,4 +7,5 @@ urlpatterns = [
     path('account-verify/<slug:token>/', account_verify, name='account_verify'),
     path('verifypage/', VerifyPage.as_view(), name='page'),
     path('api/user/', include('account.urls')),
+    path('api/finance/', include('finance.urls')),  # Include finance app URLs
 ]

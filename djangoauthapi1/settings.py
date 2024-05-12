@@ -33,8 +33,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 
-INSTALLED_APPS = [   
-    'jazzmin',
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'account',
+    'finance',
 ]
 
 MIDDLEWARE = [

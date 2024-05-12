@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from account.models import Expenditure, Income, User
+from account.models import Category, User
 from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
@@ -112,12 +112,8 @@ class UserProfileUpdateSerializer(serializers.ModelSerializer):
         fields = ['email', 'name']
 
 
-class IncomeSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Income
-        fields = ['id', 'amount', 'category', 'description', 'timestamp']
+        model = Category
+        fields = '__all__'
 
-class ExpenditureSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Expenditure
-        fields = ['id', 'amount', 'category', 'description', 'timestamp']

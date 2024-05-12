@@ -336,12 +336,12 @@
 			"response": []
 		},
 		{
-			"name": "Income",
+			"name": "Category",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/income/",
+					"raw": "http://127.0.0.1:8000/api/user/categories/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -353,6 +353,65 @@
 					"path": [
 						"api",
 						"user",
+						"categories",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Category",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"Category1\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/user/categories/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"user",
+						"categories",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Income",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/finance/income/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"finance",
 						"income",
 						""
 					]
@@ -367,7 +426,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"amount\":\"200\",\r\n    \"category\":\"saving\",\r\n    \"description\":\"This is a saving account\"\r\n}",
+					"raw": "{\r\n    \"title\":\"Income\",\r\n    \"amount\":\"200\",\r\n    \"category\":1,\r\n    \"description\":\"This is income\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -375,7 +434,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/income/",
+					"raw": "http://127.0.0.1:8000/api/finance/income/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -386,7 +445,7 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"user",
+						"finance",
 						"income",
 						""
 					]
@@ -395,12 +454,21 @@
 			"response": []
 		},
 		{
-			"name": "expenditure",
+			"name": "Income",
 			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"Income1\",\r\n    \"amount\":\"400\",\r\n    \"category\":1,\r\n    \"description\":\"This iss income\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/expenditure/",
+					"raw": "http://127.0.0.1:8000/api/finance/income/2/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -411,7 +479,59 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"user",
+						"finance",
+						"income",
+						"2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Income",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/finance/income/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"finance",
+						"income",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Expenditure",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/finance/expenditure/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"finance",
 						"expenditure",
 						""
 					]
@@ -420,13 +540,13 @@
 			"response": []
 		},
 		{
-			"name": "expenditure",
+			"name": "Expenditure",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"amount\":\"200\",\r\n    \"category\":\"saving\",\r\n    \"description\":\"This is a saving account\"\r\n}",
+					"raw": "{\r\n    \"title\":\"Expenditure\",\r\n    \"amount\":\"200\",\r\n    \"category\":1,\r\n    \"description\":\"This is Expenditure\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -434,7 +554,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/user/expenditure/",
+					"raw": "http://127.0.0.1:8000/api/finance/expenditure/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -445,8 +565,69 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"user",
+						"finance",
 						"expenditure",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Expenditure",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\":\"Expenditure1\",\r\n    \"amount\":\"400\",\r\n    \"category\":1,\r\n    \"description\":\"This iss Expenditure\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/finance/expenditure/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"finance",
+						"expenditure",
+						"1",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Expenditure",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/finance/expenditure/1/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"finance",
+						"expenditure",
+						"1",
 						""
 					]
 				}

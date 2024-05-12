@@ -1,18 +1,17 @@
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
-from account.serializers import ExpenditureSerializer, IncomeSerializer, SendPasswordResetEmailSerializer, UserChangePasswordSerializer, UserLoginSerializer, UserPasswordResetSerializer, UserProfileSerializer, UserProfileUpdateSerializer, UserRegistrationSerializer
+from account.serializers import CategorySerializer, SendPasswordResetEmailSerializer, UserChangePasswordSerializer, UserLoginSerializer, UserPasswordResetSerializer, UserProfileSerializer, UserProfileUpdateSerializer, UserRegistrationSerializer
 from django.contrib.auth import authenticate
 from account.renderers import UserRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
-from .models import Expenditure, Income, Profile
+from .models import Category, Profile
 from django.core.mail import send_mail
 import uuid
-from django.shortcuts import redirect
-from django.contrib import messages
 from django.conf import settings
 from django.shortcuts import render
+from django.http import Http404
 
 # Generate Token Manually
 def get_tokens_for_user(user):
@@ -152,28 +151,41 @@ class UserDeleteView(APIView):
 
 
 
-class IncomeListView(APIView):
-    def get(self, request, format=None):
-        incomes = Income.objects.all()
-        serializer = IncomeSerializer(incomes, many=True)
+class CategoryListCreateAPIView(APIView):
+    def get(self, request):
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
-        serializer = IncomeSerializer(data=request.data)
+    def post(self, request):
+        serializer = CategorySerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ExpenditureListView(APIView):
-    def get(self, request, format=None):
-        expenditures = Expenditure.objects.all()
-        serializer = ExpenditureSerializer(expenditures, many=True)
+class CategoryRetrieveUpdateDestroyAPIView(APIView):
+    def get_object(self, pk):
+        try:
+            return Category.objects.get(pk=pk)
+        except Category.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        category = self.get_object(pk)
+        serializer = CategorySerializer(category)
         return Response(serializer.data)
 
-    def post(self, request, format=None):
-        serializer = ExpenditureSerializer(data=request.data)
+    def put(self, request, pk):
+        category = self.get_object(pk)
+        serializer = CategorySerializer(category, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        category = self.get_object(pk)
+        category.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+

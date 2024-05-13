@@ -4,7 +4,7 @@ from django.utils.encoding import smart_str, force_bytes, DjangoUnicodeDecodeErr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from account.utils import Util
-
+from django.contrib.auth.hashers import check_password
 class UserRegistrationSerializer(serializers.ModelSerializer):
   # We are writing this becoz we need confirm password field in our Registratin Request
   password2 = serializers.CharField(style={'input_type':'password'}, write_only=True)
@@ -38,20 +38,30 @@ class UserProfileSerializer(serializers.ModelSerializer):
     fields = ['id', 'email', 'name']
 
 class UserChangePasswordSerializer(serializers.Serializer):
-  password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
-  password2 = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
-  class Meta:
-    fields = ['password', 'password2']
+    current_password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
+    new_password = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
+    new_password2 = serializers.CharField(max_length=255, style={'input_type':'password'}, write_only=True)
 
-  def validate(self, attrs):
-    password = attrs.get('password')
-    password2 = attrs.get('password2')
-    user = self.context.get('user')
-    if password != password2:
-      raise serializers.ValidationError("Password and Confirm Password doesn't match")
-    user.set_password(password)
-    user.save()
-    return attrs
+    def validate(self, attrs):
+        current_password = attrs.get('current_password')
+        new_password = attrs.get('new_password')
+        new_password2 = attrs.get('new_password2')
+        user = self.context.get('user')
+
+        if not check_password(current_password, user.password):
+            raise serializers.ValidationError("Incorrect current password")
+
+        if new_password != new_password2:
+            raise serializers.ValidationError("New password and confirmation do not match")
+
+        return attrs
+
+    def save(self, **kwargs):
+        user = self.context.get('user')
+        new_password = self.validated_data.get('new_password')
+        user.set_password(new_password)
+        user.save()
+
 
 class SendPasswordResetEmailSerializer(serializers.Serializer):
   email = serializers.EmailField(max_length=255)

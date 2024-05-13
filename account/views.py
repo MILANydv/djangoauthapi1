@@ -107,12 +107,16 @@ class UserProfileView(APIView):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserChangePasswordView(APIView):
-  renderer_classes = [UserRenderer]
-  permission_classes = [IsAuthenticated]
-  def post(self, request, format=None):
-    serializer = UserChangePasswordSerializer(data=request.data, context={'user':request.user})
-    serializer.is_valid(raise_exception=True)
-    return Response({'msg':'Password Changed Successfully'}, status=status.HTTP_200_OK)
+    renderer_classes = [UserRenderer]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        serializer = UserChangePasswordSerializer(data=request.data, context={'user': request.user})
+        if 'current_password' not in request.data:
+            return Response({'error': 'Current password is required'}, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'msg': 'Password changed successfully'}, status=status.HTTP_200_OK)
 
 class SendPasswordResetEmailView(APIView):
   renderer_classes = [UserRenderer]
@@ -150,8 +154,9 @@ class UserDeleteView(APIView):
         return Response({'message': 'Account deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 
-
 class CategoryListCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
@@ -165,6 +170,8 @@ class CategoryListCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CategoryRetrieveUpdateDestroyAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Category.objects.get(pk=pk)
@@ -188,4 +195,3 @@ class CategoryRetrieveUpdateDestroyAPIView(APIView):
         category = self.get_object(pk)
         category.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-

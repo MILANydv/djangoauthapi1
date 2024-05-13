@@ -4,8 +4,11 @@ from rest_framework import status
 from rest_framework.views import APIView
 from .models import Expenditure, Income
 from django.http import Http404
+from rest_framework.permissions import IsAuthenticated
 
 class IncomeListCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         incomes = Income.objects.all()
         serializer = IncomeSerializer(incomes, many=True)
@@ -19,6 +22,8 @@ class IncomeListCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class IncomeRetrieveUpdateDestroyAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Income.objects.get(pk=pk)
@@ -45,6 +50,8 @@ class IncomeRetrieveUpdateDestroyAPIView(APIView):
 
 
 class ExpenditureListCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         expenditures = Expenditure.objects.all()
         serializer = ExpenditureSerializer(expenditures, many=True)
@@ -58,6 +65,8 @@ class ExpenditureListCreateAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ExpenditureRetrieveUpdateDestroyAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get_object(self, pk):
         try:
             return Expenditure.objects.get(pk=pk)
